@@ -1,0 +1,1 @@
+pip install fastapi uvicorn pydantic requests streamlit fuzzywuzzy python-levenshtein
