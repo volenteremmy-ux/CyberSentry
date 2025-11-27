@@ -4,7 +4,7 @@ import time
 # 1. THE AI BRAIN (Simulated for speed, or plug in Hugging Face here)
 def scan_message(text):
     # List of danger words for the demo (Sheng/Swahili/English)
-    danger_words = ["blocked", "fungiwa", "tuma", "refund", "kra", "suspended", "urgent", "click here"]
+    danger_words = ["blocked", "fungwa", "tuma", "refund", "kra", "suspended", "urgent", "click here"]
     
     text_lower = text.lower()
     

@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Ulinzi Trust SDK"
+    PROJECT_NAME: str = "CyberSentry Trust SDK"
     VERSION: str = "2.3.0 (Stable-Fix)"
     API_PREFIX: str = "/api/v1"
     

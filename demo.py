@@ -8,7 +8,7 @@ import time
 API_URL = "http://127.0.0.1:8000/api/v1/scan"
 
 # --- PAGE SETUP ---
-st.set_page_config(layout="wide", page_title="Ulinzi IQ Enterprise Demo", page_icon="🛡️")
+st.set_page_config(layout="wide", page_title="CyberSentry Enterprise Demo", page_icon="🛡️")
 
 # Custom CSS for that "Banking App" feel
 st.markdown("""
@@ -26,7 +26,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- HEADER ---
-st.title("🛡️ Ulinzi IQ: Enterprise Fraud SDK")
+st.title("🛡️ CyberSentry: Enterprise Fraud SDK")
 st.markdown("##### The Intelligence Layer protecting the 'Last Mile' of Digital Finance.")
 st.divider()
 
@@ -43,7 +43,7 @@ with col1:
         # Inputs
         sender_input = st.text_input("Sender ID (Who sent it?)", value="0722123456")
         message_input = st.text_area("Message Content", 
-                                     value="M-Pesa imefungiwa. Dial *33*4# ku-reverse transaction haraka.", 
+                                     value="M-Pesa imefungwa. Dial *33*4# ku-reverse action haraka.", 
                                      height=120)
         app_source = st.selectbox("Injection Source", ["SMS", "WhatsApp", "Web Browser"])
         
@@ -74,7 +74,7 @@ with col2:
         if 'attack_live' in st.session_state and st.session_state['attack_live']:
             
             st.write("---")
-            st.caption("🔒 Ulinzi Security Layer Scanning...")
+            st.caption("🔒 CyberSentry Security Layer Scanning...")
             
             # 1. SEND DATA TO BACKEND
             try:
@@ -135,3 +135,131 @@ with col2:
             st.button("Send Money")
             
         st.markdown('</div>', unsafe_allow_html=True)
+
+import streamlit as st
+import requests
+import pandas as pd
+import numpy as np
+import time
+
+# CONFIGURATION
+API_BASE = "http://127.0.0.1:8000/api/v1"
+
+st.set_page_config(layout="wide", page_title="Ulinzi IQ Enterprise", page_icon="🛡️")
+
+# CSS for Dashboard Cards
+st.markdown("""
+<style>
+    .metric-card {
+        background-color: #f0f2f6;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+    .big-number { font-size: 2em; font-weight: bold; color: #ff4b4b; }
+</style>
+""", unsafe_allow_html=True)
+
+# TABS
+tab1, tab2, tab3 = st.tabs(["📱 Simulation Demo", "🏦 Bank CISO Dashboard", "📢 User Reporting"])
+
+# ==========================================
+# TAB 1: THE SIMULATOR (Existing Logic)
+# ==========================================
+with tab1:
+    st.header("Real-Time Transaction Defense")
+    
+    c1, c2 = st.columns([1, 1])
+    
+    with c1:
+        st.subheader("Attacker Console")
+        with st.container(border=True):
+            sender_input = st.text_input("Sender ID", "0722123456")
+            message_input = st.text_area("Message", "M-Pesa imefungiwa. Dial *33*4#.")
+            if st.button("🚀 Inject Threat"):
+                st.session_state['payload'] = {"sender": sender_input, "message": message_input, "source": "SMS"}
+                st.session_state['attack_live'] = True
+                st.success("Threat Injected")
+
+    with c2:
+        st.subheader("Client Device (Protected)")
+        if 'attack_live' in st.session_state:
+            if st.button("Simulate 'Send Money'"):
+                with st.spinner("Ulinzi SDK Scanning..."):
+                    try:
+                        res = requests.post(f"{API_BASE}/scan", json=st.session_state['payload'])
+                        data = res.json()
+                        if data['action'] == "BLOCK":
+                            st.error(f"⛔ BLOCKED: {data['risk_level']} (Score: {data['risk_score']})")
+                            st.write(f"Flags: {data['flags']}")
+                        else:
+                            st.success("✅ Safe to Process")
+                    except:
+                        st.error("Backend Offline")
+
+# ==========================================
+# TAB 2: THE BANK DASHBOARD (New Feature)
+# ==========================================
+with tab2:
+    st.header("🛡️ Ulinzi Threat Intelligence Center")
+    st.markdown("Live view of fraud attempts across the network.")
+    
+    # Refresh Button
+    if st.button("🔄 Refresh Live Data"):
+        st.rerun()
+
+    # Fetch Data
+    try:
+        res = requests.get(f"{API_BASE}/stats")
+        stats = res.json()
+        
+        # 1. TOP METRICS
+        m1, m2, m3 = st.columns(3)
+        with m1: st.metric("Total Scans Today", stats['total_scans'], "+12%")
+        with m2: st.metric("Threats Blocked", stats['threats_blocked'], "+5%", delta_color="inverse")
+        with m3: st.metric("System Latency", "42ms", "-5ms")
+        
+        st.divider()
+        
+        # 2. HEATMAP & TRENDS
+        d1, d2 = st.columns([2, 1])
+        
+        with d1:
+            st.subheader("📍 Attack Origin Heatmap")
+            map_data = pd.DataFrame(stats['heatmap'])
+            st.map(map_data, zoom=6)
+            
+        with d2:
+            st.subheader("🔥 Active Campaigns")
+            for campaign in stats['active_campaigns']:
+                st.error(f"⚠️ {campaign}")
+                
+            st.subheader("📝 Recent Reports")
+            if stats['recent_reports']:
+                for report in stats['recent_reports']:
+                    st.caption(f"From: {report['sender']}")
+                    st.text(f"Msg: {report['message'][:30]}...")
+            else:
+                st.info("No manual reports yet.")
+
+    except:
+        st.warning("Start the backend to see live data.")
+
+# ==========================================
+# TAB 3: USER REPORTING (Crowdsourcing)
+# ==========================================
+with tab3:
+    st.header("📢 Report a Scam")
+    st.markdown("Help protect the Ulinzi Network by reporting new scams.")
+    
+    with st.form("report_form"):
+        r_sender = st.text_input("Scammer Number")
+        r_msg = st.text_area("Message Received")
+        r_cat = st.selectbox("Category", ["Phishing", "Extortion", "Fake Reward", "Job Scam"])
+        
+        submitted = st.form_submit_button("Submit Report")
+        if submitted:
+            payload = {"sender": r_sender, "message": r_msg, "category": r_cat}
+            requests.post(f"{API_BASE}/report", json=payload)
+            st.success("Report Submitted! The database has been updated.")

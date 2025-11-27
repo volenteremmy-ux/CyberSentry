@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fuzzywuzzy import fuzz
 
-app = FastAPI(title="Ulinzi Trust SDK API")
+app = FastAPI(title="CyberSentry Trust SDK API")
 
 # 1. THE DATA MODEL
 class TransactionContext(BaseModel):
@@ -20,7 +20,7 @@ def calculate_risk(text: str, sender: str):
 
     # A. SHENG/SWAHILI TRIGGERS (Intent Detection)
     danger_words = {
-        "imefungiwa": 30, "blocked": 30, "suspended": 30, 
+        "imefungwa": 30, "blocked": 30, "suspended": 30, 
         "tuma": 20, "dial": 20, "reverse": 20, 
         "pin": 20, "unlock": 20, "reward": 15, "zawadi": 15
     }

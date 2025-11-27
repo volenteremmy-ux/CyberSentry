@@ -17,3 +17,8 @@ class ScanResponse(BaseModel):
     analysis_time_ms: float
     flags: List[str] # Detailed reasons
     action: str      # ALLOW, WARN, BLOCK
+
+class ReportRequest(BaseModel):
+    sender: str
+    message: str
+    category: str # e.g. "Phishing", "Extortion"

@@ -7,12 +7,10 @@ class AIHandler:
     def __init__(self):
         # Setup Hugging Face
         self.hf_headers = {"Authorization": f"Bearer {settings.HF_API_KEY}"}
-        
-        # Setup Google Gemini
         genai.configure(api_key=settings.GEMINI_API_KEY)
         self.gemini_model = genai.GenerativeModel(settings.GEMINI_MODEL)
 
-    def predict_intent(self, text: str):
+    def predict_intent(self, text: str, sender: str):
         """
         Tries HuggingFace -> Fails? -> Tries Gemini -> Fails? -> Returns 0 (Hardcoded Fallback)
         """
@@ -51,27 +49,29 @@ class AIHandler:
         # --- ATTEMPT 2: GOOGLE GEMINI (Generative) ---
         print("   🔸 Attempting Gemini Flash...")
         try:
-            # We use a strict prompt to get a JSON response
+            # IMPROVED PROMPT
             prompt = f"""
-            Analyze this SMS for fraud. 
-            Text: "{text}"
-            Return ONLY a JSON object: {{"risk_score": 0-100, "label": "reason"}}
+            Act as a bank fraud security expert. Analyze this message context.
+            
+            Sender: "{sender}"
+            Message: "{text}"
+            
+            Rules:
+            1. If this is a standard transaction receipt, low balance alert, or decline notification, return risk_score: 0.
+            2. Legitimate banks DO ask users to call a toll-free number for support. This is SAFE.
+            3. ONLY flag as fraud if it asks for a PIN, demands an immediate transfer to a random number, or threatens the user.
+            
+            Return ONLY JSON: {{"risk_score": 0-100, "label": "reason"}}
             """
             
-            # We assume Gemini is fast, but we wrap in a general try block
-            # Note: The Python SDK handles timeouts differently, but 'flash' is usually < 1s
             response = self.gemini_model.generate_content(prompt)
-            
-            # Clean the response text to find JSON
             result_text = response.text.replace("```json", "").replace("```", "").strip()
             data = json.loads(result_text)
             
             return data.get("risk_score", 0), f"GEMINI_{data.get('label', 'Analyzed').upper()}"
 
         except Exception as e:
-            print(f"   ⚠️ Gemini Fail: {e}. Falling back to Regex.")
+            print(f"   ⚠️ Gemini Fail: {e}")
+            return 0, "AI_OFFLINE"
 
-        
-        # --- ATTEMPT 3: FALLBACK (Hardcoded) ---
-        # If we reach here, both AIs failed. Return 0 so the Regex engine takes over.
         return 0, "AI_OFFLINE"
