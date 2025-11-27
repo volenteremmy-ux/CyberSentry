@@ -263,3 +263,46 @@ with tab3:
             payload = {"sender": r_sender, "message": r_msg, "category": r_cat}
             requests.post(f"{API_BASE}/report", json=payload)
             st.success("Report Submitted! The database has been updated.")
+
+
+
+
+
+
+
+
+# # # ... (After the Bank App Column) ...
+
+# st.divider()
+
+# # # --- THE COMMUNITY DASHBOARD ---
+# st.subheader("🌍 Live Community Threat Intelligence")
+
+# # # Fetch Stats from Backend
+# try:
+#     stats_url = "http://127.0.0.1:8000/api/v1/stats"
+#     stats = requests.get(stats_url).json()
+    
+#     m1, m2, m3 = st.columns(3)
+#     m1.metric("Total Scams Blocked", stats['total_reports'])
+#     m2.metric("Most Active Threat", stats['top_scam_sender'])
+#     m3.metric("Latest Script", stats['recent_threat'])
+
+# except:
+#     st.warning("Connect Backend to see Live Stats")
+
+# # --- REPORT BUTTON LOGIC ---
+# # Inside the Bank App (Right Column), add a button to "Report this as Scam"
+# # (Put this inside the 'if action == BLOCK' section in your existing code)
+# # Example:
+# if action == "BLOCK":
+#     st.error("Blocked")
+#     if st.button("🚨 Report to Community"):
+#         r_payload = {
+#             "sender": st.session_state['payload']['sender'],
+#             "message": st.session_state['payload']['message'],
+#             "source": st.session_state['payload']['source'],
+#             "risk_score": score
+#         }
+#         requests.post("http://127.0.0.1:8000/api/v1/report", json=r_payload)
+#         st.toast("Report submitted to Ulinzi Network!")

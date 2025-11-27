@@ -22,3 +22,23 @@ class ReportRequest(BaseModel):
     sender: str
     message: str
     category: str # e.g. "Phishing", "Extortion"
+
+
+
+
+
+
+# # ... (Keep your existing ScanRequest / ScanResponse) ...
+
+# # NEW: For Reporting a Scam
+# class ReportRequest(BaseModel):
+#     sender: str
+#     message: str
+#     source: str
+#     risk_score: int = 0 # Optional, maybe the user sets severity
+
+# # NEW: For returning stats
+# class StatsResponse(BaseModel):
+#     total_reports: int
+#     top_scam_sender: str
+#     recent_threat: str

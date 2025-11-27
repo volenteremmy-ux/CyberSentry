@@ -32,7 +32,14 @@ SAFE_PATTERNS = [
     r"withdraw",
     r"tuition",
     r"school fees",
-    r"payment of"
+    r"payment of",
+    r"confirmed. ksh",     # M-Pesa Receipts
+    r"sent to",            # Transaction
+    r"received ksh",       # Money received
+    r"balance is",         # Balance check
+    r"bundle",             # Data bundles
+    r"insufficient funds", # Failed transaction
+    r"bank"           # Generic bank messages often trigger false positives
 ]
 
 WEIGHTS = {
