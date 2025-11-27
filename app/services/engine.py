@@ -125,3 +125,23 @@ class FraudEngine:
 
         process_time = (time.time() - start_time) * 1000 
         return score, level, flags, action, process_time
+    
+
+
+
+
+def analyze(self, text: str, sender: str):
+        # ... (Regex Layers run first) ...
+        # Regex finds "imefungiwa" -> Score = 30.
+        
+        # ... (AI Layer) ...
+        ai_score, ai_label = self.ai.predict_intent(text)
+        
+        if ai_label == "OFFLINE_MODE":
+            # If offline, we multiply the Regex score to be more aggressive (Safety First)
+            # If we suspect a scam but can't ask the AI, we assume it IS a scam.
+            if score > 0:
+                print("   ⚠️ Offline: Boosting Regex Confidence")
+                score = min(score * 1.5, 100) # Boost score by 50%
+        
+        # ... (Rest of logic) ...

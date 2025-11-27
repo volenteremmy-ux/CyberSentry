@@ -16,7 +16,7 @@ def scan_message(text):
     return False, "Safe", "No threats detected."
 
 # 2. THE UI (Streamlit)
-st.set_page_config(layout="wide", page_title="CyberSentry Demo")
+st.set_page_config(layout="wide", page_title="Ulinzi Demo")
 
 # Custom CSS to make the right column look like a phone
 st.markdown("""
@@ -71,15 +71,15 @@ with col2:
             is_scam, status, reason = scan_message(st.session_state['incoming_msg'])
             
             if is_scam:
-                # Show the CYBERSENTRY OVERLAY
+                # Show the ULINZI OVERLAY
                 st.markdown(f"""
                 <div class="alert-box">
-                    CYBERSENTRY ALERT <br>
+                    ULINZI ALERT <br>
                     {status}: {reason} <br>
                     DO NOT CLICK
                 </div>
                 """, unsafe_allow_html=True)
             else:
-                st.success("CyberSentry Scanned: Safe")
+                st.success("Ulinzi Scanned: Safe")
                 
         st.markdown('</div>', unsafe_allow_html=True)

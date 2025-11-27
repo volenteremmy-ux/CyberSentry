@@ -75,3 +75,26 @@ class AIHandler:
             return 0, "AI_OFFLINE"
 
         return 0, "AI_OFFLINE"
+    
+
+
+
+
+
+import requests
+import google.generativeai as genai
+from app.core.config import settings
+
+class AIHandler:
+    def __init__(self):
+        # We simulate the internet status
+        self.is_online = True  # Change to False to test offline mode
+
+    def predict_intent(self, text: str):
+        # 1. CHECK CONNECTIVITY
+        if not self.is_online:
+            print("   📶 DEVICE OFFLINE. Skipping Cloud AI.")
+            return 0, "OFFLINE_MODE"
+
+        # 2. PROCEED TO CLOUD (Hugging Face / Gemini)
+        # ... (Rest of your existing cloud code) ... 

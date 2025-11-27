@@ -8,7 +8,7 @@ import time
 API_URL = "http://127.0.0.1:8000/api/v1/scan"
 
 # --- PAGE SETUP ---
-st.set_page_config(layout="wide", page_title="CyberSentry Enterprise Demo", page_icon="🛡️")
+st.set_page_config(layout="wide", page_title="Ulinzi Enterprise Demo", page_icon="🛡️")
 
 # Custom CSS for that "Banking App" feel
 st.markdown("""
@@ -26,7 +26,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- HEADER ---
-st.title("🛡️ CyberSentry: Enterprise Fraud SDK")
+st.title("🛡️ Ulinzi: Enterprise Fraud SDK")
 st.markdown("##### The Intelligence Layer protecting the 'Last Mile' of Digital Finance.")
 st.divider()
 
@@ -74,7 +74,7 @@ with col2:
         if 'attack_live' in st.session_state and st.session_state['attack_live']:
             
             st.write("---")
-            st.caption("🔒 CyberSentry Security Layer Scanning...")
+            st.caption("🔒 Ulinzi Security Layer Scanning...")
             
             # 1. SEND DATA TO BACKEND
             try:

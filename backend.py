@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fuzzywuzzy import fuzz
 
-app = FastAPI(title="CyberSentry Trust SDK API")
+app = FastAPI(title="Ulinzi Trust SDK API")
 
 # 1. THE DATA MODEL
 class TransactionContext(BaseModel):
